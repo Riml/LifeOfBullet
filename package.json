@@ -1,0 +1,20 @@
+{
+  "name": "life_of_bullets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",     
+    "dev": "lite-server"  
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Riml/LifeOfBullet.git"
+  },
+  "author": "Ilmir Taychinov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Riml/LifeOfBullet/issues"
+  },
+  "homepage": "https://github.com/Riml/LifeOfBullet#readme"
+}

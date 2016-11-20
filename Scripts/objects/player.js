@@ -30,24 +30,26 @@ var objects;
         Player.prototype.update = function () {
             // Acceleration \
             // Velocity
-            if (this._velocity.x > this._maxSpeedX) {
+            this._velocity.x = 2;
+            /*if(this._velocity.x > this._maxSpeedX) {
                 this._velocity.x = this._maxSpeedX;
-            }
-            else if (this._velocity.x < -this._maxSpeedX) {
+            } else if (this._velocity.x < -this._maxSpeedX) {
                 this._velocity.x = -this._maxSpeedX;
             }
             else {
                 this._velocity.x += this._accelerationX;
             }
-            if (this._velocity.y > 9.81) {
+
+            if(this._velocity.y > 9.81) {
                 this._velocity.y = 5;
             }
-            if (this._isGrounded) {
+
+
+            if(this._isGrounded) {
                 this._velocity.y = 0;
-            }
-            else {
+            } else {
                 this._velocity.y += this._gravity;
-            }
+            }*/
             // Position
             this.position.x += this._velocity.x;
             this.position.y += this._velocity.y;
@@ -78,7 +80,7 @@ var objects;
 
             //
             */
-            console.log("Position" + this.position + " Vel: " + this._velocity + " Acc: " + this._accelerationX);
+            //console.log("Position" + this.position + " Vel: " + this._velocity + " Acc: " + this._accelerationX);
             _super.prototype.update.call(this);
         };
         Player.prototype.getVelocity = function () {

@@ -31,7 +31,8 @@ module objects {
         public update() : void {
             // Acceleration \
             // Velocity
-            if(this._velocity.x > this._maxSpeedX) {
+            this._velocity.x=2;
+            /*if(this._velocity.x > this._maxSpeedX) {
                 this._velocity.x = this._maxSpeedX;
             } else if (this._velocity.x < -this._maxSpeedX) {
                 this._velocity.x = -this._maxSpeedX;
@@ -49,7 +50,7 @@ module objects {
                 this._velocity.y = 0;
             } else {
                 this._velocity.y += this._gravity;
-            }
+            }*/
 
 
             
@@ -84,7 +85,7 @@ module objects {
 
             //
             */
-            console.log("Position" + this.position + " Vel: " + this._velocity + " Acc: " + this._accelerationX);
+            //console.log("Position" + this.position + " Vel: " + this._velocity + " Acc: " + this._accelerationX);
             super.update();
         }
 
