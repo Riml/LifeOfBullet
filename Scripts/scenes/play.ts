@@ -158,7 +158,7 @@ module scenes {
 
             for(var r=0;r<5;r++){
                 blocksToBuild[r].forEach(el => {
-                    var currentBlock =new objects.Block(new objects.Vector2(this._tileSize*el+this._tileSize/2,this._tileSize*r+this._tileSize/2))
+                    var currentBlock =new objects.Block(new objects.Vector2(this._tileSize*2*el+this._tileSize/2,this._tileSize*r+this._tileSize/2))
                     this._blocks.push(currentBlock);
                     this._scrollableObjContainer.addChild(currentBlock);
                 });

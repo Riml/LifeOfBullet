@@ -21,7 +21,7 @@ var objects;
             _super.prototype.update.call(this);
         };
         Player.prototype.slowMo = function () {
-            this.x -= 3;
+            this.x -= 4;
         };
         Player.prototype.Accelerate = function () {
             this.x += 3;

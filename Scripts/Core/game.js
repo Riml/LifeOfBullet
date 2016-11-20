@@ -12,8 +12,7 @@ var assetData = [
     { id: "background", src: "../../Assets/images/bg.png" },
     //{id: "bullet", src: "../../Assets/images/player.png"},
     { id: "block", src: "../../Assets/images/block.png" },
-    { id: "player_ss", src: "../../Assets/images/player_ss.png" },
-    { id: "atlas", src: "../../Assets/images/Test.png" }
+    { id: "player_ss", src: "../../Assets/images/player_ss.png" }
 ];
 function preload() {
     // Create a queue for assets being loaded
@@ -32,9 +31,9 @@ function init() {
     createjs.Ticker.on("tick", this.gameLoop, this);
     var newData = {
         "images": [assets.getResult("player_ss")],
-        "frames": { width: 90, height: 30 },
+        "frames": { width: 90, height: 50 },
         "animations": {
-            "idle": [0, 1, 2, 3, "idle", 0.05],
+            "idle": [0, 3, "idle", 0.5],
             "slow": [4, 5, "slow"],
             "fast": [8, 9, "fast"]
         }

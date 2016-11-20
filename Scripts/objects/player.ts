@@ -24,7 +24,7 @@ module objects {
         }
 
         public slowMo() : void {
-            this.x -= 3;
+            this.x -= 4;
         }
         public Accelerate() : void {
             this.x += 3;

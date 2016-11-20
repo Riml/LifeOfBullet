@@ -124,7 +124,7 @@ var scenes;
             var floatingHalfWalls = [[22, 1], [22, 2], [22, 3], [22, 4]];
             for (var r = 0; r < 5; r++) {
                 blocksToBuild[r].forEach(function (el) {
-                    var currentBlock = new objects.Block(new objects.Vector2(_this._tileSize * el + _this._tileSize / 2, _this._tileSize * r + _this._tileSize / 2));
+                    var currentBlock = new objects.Block(new objects.Vector2(_this._tileSize * 2 * el + _this._tileSize / 2, _this._tileSize * r + _this._tileSize / 2));
                     _this._blocks.push(currentBlock);
                     _this._scrollableObjContainer.addChild(currentBlock);
                 });
