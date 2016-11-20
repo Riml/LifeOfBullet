@@ -9,12 +9,16 @@ module scenes {
         private _scrollTrigger : number = 350;
         private _tileSize : number = 128;
 
+       
+
         constructor() {
             super();
             //this.start();
         }
 
         public start() : void {
+            animationInPlay=false;
+            idleAnimationInPlay=true;
             this._tileSize = 128;
             console.log("Level started");
             this._bg = new createjs.Bitmap(assets.getResult("background"));
@@ -45,7 +49,7 @@ module scenes {
         }
 
         public update() : void {
-
+            console.log( "animationInPlay? : " +animationInPlay);
             if(controls.UP) {
                 this._player.moveUp();
             }
@@ -54,10 +58,25 @@ module scenes {
             }
              if(controls.LEFT) {
                 this._player.slowMo();
+             
+                if(!animationInPlay){
+                 
+                    this._player.gotoAndPlay("slow");
+                    animationInPlay=true;
+                }
             }
              if(controls.RIGHT) {
                 this._player.Accelerate();
-            }          
+                if(!animationInPlay){
+                    this._player.gotoAndPlay("fast");
+                    animationInPlay=true;
+                }
+            }
+             if(!animationInPlay &&  idleAnimationInPlay){
+                    this._player.gotoAndPlay("idle");
+                    idleAnimationInPlay=false;
+                   
+                }          
            
 
             this._player.update();
@@ -82,10 +101,12 @@ module scenes {
                 case keys.A:
                     console.log("A key pressed");
                     controls.LEFT = true;
+                  
                     break;
                 case keys.D:
                     console.log("D key pressed");
                     controls.RIGHT = true;
+                   
                     break;
                 case keys.SPACE:
                     controls.JUMP = true;
@@ -103,9 +124,14 @@ module scenes {
                     break;
                 case keys.A:
                     controls.LEFT = false;
+                    animationInPlay=false;
+                    idleAnimationInPlay=true;
+                  
                     break;
                 case keys.D:
                     controls.RIGHT = false;
+                    animationInPlay=false;
+                    idleAnimationInPlay=true;
                     break;
                 case keys.SPACE:
                     controls.JUMP = false;

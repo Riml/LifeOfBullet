@@ -7,10 +7,17 @@ var spriteSheetLoader;
 var player_anim;
 var currentScene;
 var scene;
+var gamelost;
+var animationInPlay;
+var idleAnimationInPlay;
 // Preload Assets required
 var assetData = [
     { id: "background", src: "../../Assets/images/bg.png" },
-    //{id: "bullet", src: "../../Assets/images/player.png"},
+    { id: "bullet", src: "../../Assets/images/player.png" },
+    { id: "menu_bg", src: "../../Assets/images/menu_bg.png" },
+    { id: "playBtn", src: "../../Assets/images/playBtn.png" },
+    { id: "backBtn", src: "../../Assets/images/backBtn.png" },
+    { id: "instBtn", src: "../../Assets/images/instBtn.png" },
     { id: "block", src: "../../Assets/images/block.png" },
     { id: "player_ss", src: "../../Assets/images/player_ss.png" }
 ];
@@ -33,13 +40,13 @@ function init() {
         "images": [assets.getResult("player_ss")],
         "frames": { width: 90, height: 50 },
         "animations": {
-            "idle": [0, 3, "idle", 0.5],
-            "slow": [4, 5, "slow"],
-            "fast": [8, 9, "fast"]
+            "idle": [0, 3, "idle", 0.33],
+            "slow": [8, 9, "slow", 0.01],
+            "fast": [4, 5, "fast", 0.8]
         }
     };
     player_anim = new createjs.SpriteSheet(newData);
-    scene = config.Scene.GAME;
+    scene = config.Scene.MENU;
     changeScene();
 }
 function gameLoop(event) {
@@ -55,6 +62,12 @@ function changeScene() {
             currentScene = new scenes.Menu();
             ;
             console.log("Starting MENU scene");
+            break;
+        case config.Scene.TUTORIAL:
+            stage.removeAllChildren();
+            currentScene = new scenes.Tutorial();
+            ;
+            console.log("Starting TUTORIAL scene");
             break;
         case config.Scene.GAME:
             stage.removeAllChildren();

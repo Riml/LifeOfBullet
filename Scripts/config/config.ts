@@ -5,12 +5,13 @@ module config {
     export class Scene {
         public static MENU : number = 0;
         public static GAME : number = 1;
+        public static TUTORIAL : number = 2;
     }
 
     export class Screen {
-        public static WIDTH : number = 800;
+        public static WIDTH : number = 1000;
         public static HEIGHT : number = 640;
-        public static CENTER_X : number = 400;
+        public static CENTER_X : number = 500;
         public static CENTER_Y : number = 320;
     }
     

@@ -14,6 +14,8 @@ var scenes;
             //this.start();
         }
         Play.prototype.start = function () {
+            animationInPlay = false;
+            idleAnimationInPlay = true;
             this._tileSize = 128;
             console.log("Level started");
             this._bg = new createjs.Bitmap(assets.getResult("background"));
@@ -30,6 +32,7 @@ var scenes;
             stage.addChild(this);
         };
         Play.prototype.update = function () {
+            console.log("animationInPlay? : " + animationInPlay);
             if (controls.UP) {
                 this._player.moveUp();
             }
@@ -38,9 +41,21 @@ var scenes;
             }
             if (controls.LEFT) {
                 this._player.slowMo();
+                if (!animationInPlay) {
+                    this._player.gotoAndPlay("slow");
+                    animationInPlay = true;
+                }
             }
             if (controls.RIGHT) {
                 this._player.Accelerate();
+                if (!animationInPlay) {
+                    this._player.gotoAndPlay("fast");
+                    animationInPlay = true;
+                }
+            }
+            if (!animationInPlay && idleAnimationInPlay) {
+                this._player.gotoAndPlay("idle");
+                idleAnimationInPlay = false;
             }
             this._player.update();
             if (this.checkScroll()) {
@@ -80,9 +95,13 @@ var scenes;
                     break;
                 case keys.A:
                     controls.LEFT = false;
+                    animationInPlay = false;
+                    idleAnimationInPlay = true;
                     break;
                 case keys.D:
                     controls.RIGHT = false;
+                    animationInPlay = false;
+                    idleAnimationInPlay = true;
                     break;
                 case keys.SPACE:
                     controls.JUMP = false;

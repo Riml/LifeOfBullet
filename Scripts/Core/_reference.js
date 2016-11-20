@@ -5,9 +5,11 @@
 /// <reference path="../objects/asset.ts" />
 /// <reference path="../objects/scene.ts" />
 /// <reference path="../objects/player.ts" />
+/// <reference path="../objects/button.ts" />
 /// <reference path="../objects/gameobject.ts" />
 /// <reference path="../objects/vector2.ts" />
 /// <reference path="../util/physicsManager.ts" />
 /// <reference path="../scenes/menu.ts" />
-/// <reference path="../scenes/play.ts" /> 
+/// <reference path="../scenes/play.ts" />
+/// <reference path="../scenes/tutorial.ts" /> 
 //# sourceMappingURL=_reference.js.map

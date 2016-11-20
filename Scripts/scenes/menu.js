@@ -16,14 +16,28 @@ var scenes;
             _super.call(this);
         }
         Menu.prototype.start = function () {
+            console.log("Menu Scene Started");
+            gamelost = false;
+            this._playBtn = new objects.Button("playBtn", config.Screen.CENTER_X, config.Screen.CENTER_Y + 140);
+            this._playBtn.on("click", this._playBtnClick, this);
+            this.addChild(this._playBtn);
+            this._tutorialBtn = new objects.Button("instBtn", config.Screen.CENTER_X, config.Screen.CENTER_Y + 240);
+            this._tutorialBtn.on("click", this._tutorialBtnClick, this);
+            this.addChild(this._tutorialBtn);
+            this._menuBG = new createjs.Bitmap(assets.getResult("menu_bg"));
+            // this.addChild(this._menuBG);
+            this.addChildAt(this._menuBG, 0);
             // Add menu scene to global stage container
             stage.addChild(this);
         };
         Menu.prototype.update = function () {
         };
         Menu.prototype._playBtnClick = function (event) {
-            console.log("PRINT");
             scene = config.Scene.GAME;
+            changeScene();
+        };
+        Menu.prototype._tutorialBtnClick = function (event) {
+            scene = config.Scene.TUTORIAL;
             changeScene();
         };
         return Menu;
