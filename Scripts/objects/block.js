@@ -8,8 +8,11 @@ var objects;
     var Block = (function (_super) {
         __extends(Block, _super);
         function Block(defaultPosition) {
-            _super.call(this, "block");
-            this.position = defaultPosition;
+            _super.call(this, null, "block", "block", 128, 128);
+            console.log("block" + defaultPosition.x + " : " + defaultPosition.y);
+            this.x = defaultPosition.x;
+            this.y = defaultPosition.y;
+            //this.position =defaultPosition;
         }
         return Block;
     }(objects.GameObject));

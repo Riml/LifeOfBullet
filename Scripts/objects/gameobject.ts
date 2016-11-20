@@ -3,7 +3,17 @@ module objects {
         private _width:number;
         private _height:number;
         private _name:string;
-        private _position:objects.Vector2;
+       // private _position:Vector2;
+
+        private _TRCorner:Vector2;
+        private _TLCorner:Vector2;
+        private _BRCorner:Vector2;
+        private _BLCorner:Vector2
+
+        public collisionEnter:boolean=false;
+        public dead:boolean = false;
+
+        //private _deathAnim:string;
 
         // PUBLIC PROPERTIES
         get width() : number {
@@ -30,34 +40,80 @@ module objects {
             this._name = s;
         }
 
-        get position() : objects.Vector2 {
+        /*get position() : Vector2 {
             return this._position
         }
 
-        set position(p:objects.Vector2) {
+        set position(p:Vector2) {
             this._position = p;
         }
+        */
 
-        constructor(imageString : string) {
-            super(atlas, imageString);
+        get tr_corner() : Vector2 {
+            return new objects.Vector2(this.x + this.width * 0.5, this.y - this.height * 0.5);
+        }
 
-            this._initialize(imageString);
+        get tl_corner() : Vector2 {
+            return new objects.Vector2(this.x - this.width * 0.5, this.y - this.height * 0.5);
+        }
+
+        get br_corner() : Vector2 {
+            return new objects.Vector2(this.x + this.width * 0.5, this.y + this.height * 0.5);
+        }
+
+        get bl_corner() : Vector2 {
+            return new objects.Vector2(this.x - this.width * 0.5, this.y + this.height * 0.5);
+        }
+
+        constructor(animation : createjs.SpriteSheet, objectName:string, singleImageString:string=null,w:number =0, h:number=0) {
+            if(animation != null)
+                super(animation,"idle");
+            else{
+                 let newData = {
+                    "images": [assets.getResult(singleImageString)],
+                    "frames": {width:w, height:h},
+                    "animations": {                        
+                        "idle": {"frames": [0]}
+                    }
+                }
+                var temp_anim = new createjs.SpriteSheet(newData);
+
+                super(temp_anim,"idle");
+            }                
+            //this._deathAnim = deathAnimString;
+            this.name = objectName;
+            this._initialize();
             this.start();
         }
-        
-        private _initialize(imageString:string):void {
-            this.name = imageString;
+
+        private _initialize():void {
+           
+            //console.log("initializing "+this.name)
             this.width = this.getBounds().width;
             this.height = this.getBounds().height;
-            //this.regX = this.width * 0.5;
-            //this.regY = this.height * 0.5;
-            this.position = new Vector2(this.x, this.y);
+            this.regX = this.width / 2;
+            this.regY = this.height / 2;
+            //this.position = new Vector2(this.x, this.y);
         }
 
         public start():void {}
         public update():void {
-            this.x = this.position.x;
-            this.y = this.position.y;
+            //this.x = this.position.x;
+           // this.y = this.position.y;
+
+           // if(this.currentAnimationFrame == shipAtlas.getNumFrames("explode") - 1) {
+           //     currentScene.removeChild(this);
+            //}
+        }
+
+        public destroy() : void {
+            //this.gotoAndPlay(this._deathAnim);
+            //if(this.name=="enemy"){
+            //        this.name="dead_enemy"
+           // }
+               
+          
+             currentScene.removeChild(this);
         }
     }
 }

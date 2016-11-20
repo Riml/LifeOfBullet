@@ -4,15 +4,15 @@ var assets;
 var canvas;
 var stage;
 var spriteSheetLoader;
-var atlas;
+var player_anim;
 var currentScene;
 var scene;
 // Preload Assets required
 var assetData = [
     { id: "background", src: "../../Assets/images/bg.png" },
-    //{id: "floor", src: "../../Assets/images/floor.png"},
+    //{id: "bullet", src: "../../Assets/images/player.png"},
     { id: "block", src: "../../Assets/images/block.png" },
-    //{id: "floor", src: "../../Assets/images/floor.png"},
+    { id: "player_ss", src: "../../Assets/images/player_ss.png" },
     { id: "atlas", src: "../../Assets/images/Test.png" }
 ];
 function preload() {
@@ -30,40 +30,16 @@ function init() {
     stage.enableMouseOver(20);
     createjs.Ticker.setFPS(config.Game.FPS);
     createjs.Ticker.on("tick", this.gameLoop, this);
-    var atlasData = {
-        "images": [
-            /*
-            assets.getResult("player"),
-            assets.getResult("block"),
-            assets.getResult("pipe1.png"),
-            assets.getResult("pipe2.png"),
-            assets.getResult("pipe3.png"),
-            assets.getResult("qBlock")
-            */
-            assets.getResult("atlas")
-        ],
-        "frames": [
-            [40, 0, 45, 45, 0, 0, 0],
-            [43, 45, 46, 86, 0, 0, 0],
-            [43.131, 39, 86, 0, 0, 0],
-            [0, 131, 43, 86, 0, 0, 0],
-            [0, 217, 87, 87, 0, 0, 0],
-            [0, 304, 87, 130, 0, 0, 0],
-            [0, 434, 93, 175, 0, 0, 0],
-            [0, 45, 43, 86, 0, 0, 0],
-            [0, 0, 40, 45, 0, 0, 0]
-        ],
+    var newData = {
+        "images": [assets.getResult("player_ss")],
+        "frames": { width: 90, height: 30 },
         "animations": {
-            "run": { "frames": [1, 3], speed: 0.5 },
-            "player": { "frames": [7] },
-            "block": { "frames": [0] },
-            "qBlock": { "frames": [8] },
-            "pipe1": { "frames": [4] },
-            "pipe2": { "frames": [5] },
-            "pipe3": { "frames": [6] }
-        },
+            "idle": [0, 1, 2, 3, "idle", 0.05],
+            "slow": [4, 5, "slow"],
+            "fast": [8, 9, "fast"]
+        }
     };
-    atlas = new createjs.SpriteSheet(atlasData);
+    player_anim = new createjs.SpriteSheet(newData);
     scene = config.Scene.GAME;
     changeScene();
 }

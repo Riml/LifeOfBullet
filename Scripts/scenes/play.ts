@@ -2,13 +2,8 @@ module scenes {
     export class Play extends objects.Scene {
 
         private _bg : createjs.Bitmap;
-
-        //private _ground : createjs.Bitmap;
         private _player : objects.Player;
-
-        //private _pipes : objects.Pipe[];
         private _blocks : objects.Block[];
-        //private _qBlocks : objects.qBlock[];
         private _scrollableObjContainer : createjs.Container;
 
         private _scrollTrigger : number = 350;
@@ -20,50 +15,26 @@ module scenes {
         }
 
         public start() : void {
+            this._tileSize = 128;
+            console.log("Level started");
             this._bg = new createjs.Bitmap(assets.getResult("background"));
-            //this._ground = new createjs.Bitmap(assets.getResult("floor"));
+       
             this._scrollableObjContainer = new createjs.Container();
-            this._player = new objects.Player("player");
+            this._player = new objects.Player();
 
-            this._blocks = [];
-            this.buildLevel();
+               
 
-            /*this._pipes = [];
-            this._pipes.push(new objects.Pipe(config.PipeSize.SMALL, new objects.Vector2(1208, 450)));
-            this._pipes.push(new objects.Pipe(config.PipeSize.MEDIUM, new objects.Vector2(1640, 408)));
-            this._pipes.push(new objects.Pipe(config.PipeSize.LARGE, new objects.Vector2(1984,363)));
-            this._pipes.push(new objects.Pipe(config.PipeSize.LARGE, new objects.Vector2(2460, 363)));
-
-            this._blocks = [];
-            this._blocks.push(new objects.Block(new objects.Vector2(861,364)));
-            this._blocks.push(new objects.Block(new objects.Vector2(946,364)));
-            this._blocks.push(new objects.Block(new objects.Vector2(1031,364)));
-
-            this._qBlocks = [];
-            this._qBlocks.push(new objects.qBlock(new objects.Vector2(688, 364)));
-            this._qBlocks.push(new objects.qBlock(new objects.Vector2(906, 364)));
-            this._qBlocks.push(new objects.qBlock(new objects.Vector2(993, 364)));
-            this._qBlocks.push(new objects.qBlock(new objects.Vector2(948, 191)));
-            */
-
-            this._scrollableObjContainer.addChild(this._bg);
-            this._scrollableObjContainer.addChild(this._player);
-            //this._scrollableObjContainer.addChild(this._ground);
-            /*for(let pipe of this._pipes) {
-                this._scrollableObjContainer.addChild(pipe);
-            }
-
-            for(let block of this._blocks) {
-                this._scrollableObjContainer.addChild(block);
-            }
-
-            for(let qBlock of this._qBlocks) {
-                this._scrollableObjContainer.addChild(qBlock);
-            }*/
+            
 
           
 
+            this._scrollableObjContainer.addChild(this._bg);
+            this._scrollableObjContainer.addChild(this._player);
+          
+            this._blocks = [];   
+            this.buildLevel(this);
             this.addChild(this._scrollableObjContainer);
+        
 
             window.onkeydown = this._onKeyDown;
             window.onkeyup = this._onKeyUp;
@@ -75,43 +46,24 @@ module scenes {
 
         public update() : void {
 
-            if(controls.LEFT) {
-                this._player.moveLeft();
+            if(controls.UP) {
+                this._player.moveUp();
             }
-            if(controls.RIGHT) { 
-                this._player.moveRight();
-            } 
-            if(controls.JUMP) {
-                this._player.jump();
+            if(controls.DOWN) { 
+                this._player.moveDown();
             }
-
-            if(!controls.RIGHT && !controls.LEFT)
-            {
-                this._player.resetAcceleration();
+             if(controls.LEFT) {
+                this._player.slowMo();
             }
-
-            if(!this._player.getIsGrounded())
-                this._checkPlayerWithFloor();
-
-            /*for(let p of this._pipes ) {
-                if(this.checkCollision(this._player, p)) {
-                    this._player.position.x = p.x - this._player.getBounds().width - 0.01;
-                    this._player.setVelocity(new objects.Vector2(0,0));
-                    this._player.resetAcceleration();
-
-                    this._player.isColliding = true;
-                    
-                    console.log(p.name);
-                }
-                else {
-                    this._player.isColliding = false;
-                }
-            }*/
+             if(controls.RIGHT) {
+                this._player.Accelerate();
+            }          
+           
 
             this._player.update();
 
             if(this.checkScroll()) {
-                this._scrollBGForward(this._player.position.x);
+                this._scrollBGForward(this._player.x);
             }
 
 
@@ -163,16 +115,10 @@ module scenes {
 
         private _scrollBGForward(speed : number) : void{
             //if(this._scrollableObjContainer.regX < 4800 - 815)
-                this._scrollableObjContainer.regX = speed - 300;
+                this._scrollableObjContainer.regX = speed - 350;
         }
 
-        private _checkPlayerWithFloor() : void {
-            if(this._player.y+ this._player.getBounds().height > this._ground.y) {
-                console.log("HIT GROUND");
-                this._player.position.y = this._ground.y - this._player.getBounds().height;
-                this._player.setIsGrounded(true);
-            }
-        }
+     
 
         private checkScroll() : boolean {
             if(this._player.x >= this._scrollTrigger) {
@@ -195,7 +141,8 @@ module scenes {
             return false;
         }
 
-        private buildLevel(){
+        private buildLevel(thisThis){
+             console.log("Level construction started");
             var blocksToBuild = [[1,5,6,7,8,12,24,25,29,31,32,33,34,38,42,44,45,46],
                                 [1,5,8,10,12,24,25,27,34,36,37,38,40,42,44,45,46],
                                 [5,10,27,29,31,32,33,34,38,40,42],
@@ -211,9 +158,12 @@ module scenes {
 
             for(var r=0;r<5;r++){
                 blocksToBuild[r].forEach(el => {
-                    this._blocks.push(new objects.Block(new objects.Vector2(this._tileSize*el,this._tileSize*r)));
+                    var currentBlock =new objects.Block(new objects.Vector2(this._tileSize*el+this._tileSize/2,this._tileSize*r+this._tileSize/2))
+                    this._blocks.push(currentBlock);
+                    this._scrollableObjContainer.addChild(currentBlock);
                 });
             }
+            console.log("Level construction finished");
         }
     }
 }
