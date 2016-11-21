@@ -11,6 +11,7 @@
 /// <reference path="../objects/button.ts" />
 /// <reference path="../objects/gameobject.ts" />
 /// <reference path="../objects/vector2.ts" />
+/// <reference path="../objects/saw.ts" />
 
 
 /// <reference path="../util/physicsManager.ts" />

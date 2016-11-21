@@ -5,6 +5,7 @@ var canvas;
 var stage;
 var spriteSheetLoader;
 var player_anim;
+var saw_anim;
 var currentScene;
 var scene;
 var stopGame;
@@ -21,7 +22,8 @@ var assetData = [
     { id: "backBtn", src: "../../Assets/images/backBtn.png" },
     { id: "instBtn", src: "../../Assets/images/instBtn.png" },
     { id: "block", src: "../../Assets/images/block.png" },
-    { id: "player_ss", src: "../../Assets/images/player_ss.png" }
+    { id: "player_ss", src: "../../Assets/images/player_ss.png" },
+    { id: "saw_ss", src: "../../Assets/images/saw_ss.png" }
 ];
 function preload() {
     // Create a queue for assets being loaded
@@ -38,7 +40,7 @@ function init() {
     stage.enableMouseOver(20);
     createjs.Ticker.setFPS(config.Game.FPS);
     createjs.Ticker.on("tick", this.gameLoop, this);
-    var newData = {
+    var newData0 = {
         "images": [assets.getResult("player_ss")],
         "frames": { width: 90, height: 50 },
         "animations": {
@@ -47,7 +49,15 @@ function init() {
             "fast": [4, 5, "fast", 0.8]
         }
     };
-    player_anim = new createjs.SpriteSheet(newData);
+    player_anim = new createjs.SpriteSheet(newData0);
+    var newData1 = {
+        "images": [assets.getResult("saw_ss")],
+        "frames": { width: 128, height: 128 },
+        "animations": {
+            "idle": [0, 3, "idle", 0.5]
+        }
+    };
+    saw_anim = new createjs.SpriteSheet(newData1);
     scene = config.Scene.MENU;
     changeScene();
 }

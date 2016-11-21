@@ -15,7 +15,7 @@ var scenes;
         }
         Play.prototype.start = function () {
             stopGame = false;
-            this._winBtn = new objects.Button("winBtn", 0, 0);
+            this._winBtn = new objects.Button("winBtn", 75, 25);
             this._winBtn.on("click", this._winBtnClick, this);
             this._loseBtn = new objects.Button("loseBtn", 75, 25);
             this._loseBtn.on("click", this._loseBtnClick, this);
@@ -29,6 +29,7 @@ var scenes;
             this._scrollableObjContainer.addChild(this._bg);
             this._scrollableObjContainer.addChild(this._player);
             this._blocks = [];
+            this._saws = [];
             this.buildLevel(this);
             this.addChild(this._scrollableObjContainer);
             window.onkeydown = this._onKeyDown;
@@ -66,11 +67,15 @@ var scenes;
             this._blocks.forEach(function (block) {
                 _this.checkCollision(_this._player, block);
             });
+            this._saws.forEach(function (saw) {
+                _this.checkCollision(_this._player, saw);
+                saw.update();
+            });
             this._player.update();
             if (this.checkScroll()) {
                 this._scrollBGForward(this._player.x);
             }
-            if (this._player.x > 12500) {
+            if (this._player.x > 12100) {
                 stopGame = true;
                 stage.addChild(this._winBtn);
             }
@@ -78,19 +83,19 @@ var scenes;
         Play.prototype._onKeyDown = function (event) {
             switch (event.keyCode) {
                 case keys.W:
-                    console.log("W key pressed");
+                    //console.log("W key pressed");
                     controls.UP = true;
                     break;
                 case keys.S:
-                    console.log("S key pressed");
+                    //console.log("S key pressed");
                     controls.DOWN = true;
                     break;
                 case keys.A:
-                    console.log("A key pressed");
+                    //console.log("A key pressed");
                     controls.LEFT = true;
                     break;
                 case keys.D:
-                    console.log("D key pressed");
+                    // console.log("D key pressed");
                     controls.RIGHT = true;
                     break;
                 case keys.SPACE:
@@ -154,7 +159,7 @@ var scenes;
                 [1, 6, 7, 12, 24, 25, 29, 31, 32, 33, 34, 40, 44, 45, 46]
             ];
             var breakableWalls = [[12, 3], [34, 4], [38, 5], [44, 3], [45, 3], [46, 3]];
-            var floatingWalls = [[14, 2], [15, 2], [16, 2], [18, 1], [18, 3], [20, 1], [20, 3]];
+            var floatingSaws = [[14, 2], [15, 2], [16, 2], [18, 1], [18, 3], [20, 1], [20, 3]];
             var floatingHalfWalls = [[22, 1], [22, 2], [22, 3], [22, 4]];
             for (var r = 0; r < 5; r++) {
                 blocksToBuild[r].forEach(function (el) {
@@ -163,6 +168,11 @@ var scenes;
                     _this._scrollableObjContainer.addChild(currentBlock);
                 });
             }
+            floatingSaws.forEach(function (el) {
+                var currentBlock = new objects.Saw(new objects.Vector2(_this._tileSize * 2 * el[0] + _this._tileSize / 2, _this._tileSize * el[1] + _this._tileSize / 2));
+                _this._saws.push(currentBlock);
+                _this._scrollableObjContainer.addChild(currentBlock);
+            });
             console.log("Level construction finished");
         };
         Play.prototype._winBtnClick = function (event) {
