@@ -8,6 +8,7 @@ var stage: createjs.Stage;
 var spriteSheetLoader : createjs.SpriteSheetLoader;
 var player_anim : createjs.SpriteSheet;
 var saw_anim : createjs.SpriteSheet;
+var crate_anim : createjs.SpriteSheet;
 
 var currentScene : objects.Scene;
 var scene: number;
@@ -28,6 +29,7 @@ var assetData:objects.Asset[] = [
     {id: "instBtn", src: "../../Assets/images/instBtn.png"},
     {id: "block", src: "../../Assets/images/block.png"},
     {id: "player_ss", src: "../../Assets/images/player_ss.png"},
+    {id: "crate_ss", src: "../../Assets/images/crate_ss.png"},
     {id: "saw_ss", src: "../../Assets/images/saw_ss.png"}    
     //{id: "theme", src: "../../Assets/audio/main_theme.mp3"}
 ];
@@ -71,6 +73,17 @@ function init() {
         }
     }
     saw_anim = new createjs.SpriteSheet(newData1);
+
+    let newData2 = {
+        "images": [assets.getResult("crate_ss")],
+        "frames": {width:128, height:128},
+        "animations": {
+            
+            "idle": [0,0,"idle",0.5],
+            "blow": [0,3,"blow",0.9]
+        }
+    }
+    crate_anim = new createjs.SpriteSheet(newData2);
 
     scene = config.Scene.MENU;
     changeScene();

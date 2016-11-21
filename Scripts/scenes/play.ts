@@ -4,7 +4,7 @@ module scenes {
         private _bg : createjs.Bitmap;
         private _player : objects.Player;
         private _blocks : objects.Block[];
-        private _blocksPenetratable : objects.Block[];
+        private _crates : objects.Block[];
         private _saws : objects.Block[];
         private _scrollableObjContainer : createjs.Container;
 
@@ -12,6 +12,7 @@ module scenes {
         private _tileSize : number = 128;
         private _winBtn: objects.Button;
         private _loseBtn: objects.Button;
+       
 
        
 
@@ -40,7 +41,8 @@ module scenes {
           
             
             this._blocks = [];
-            this._saws = [];      
+            this._saws = []; 
+            this._crates = [];      
             this.buildLevel(this);
             this.addChild(this._scrollableObjContainer);
         
@@ -87,10 +89,19 @@ module scenes {
             this._blocks.forEach(block => {
                      this.checkCollision(this._player, block);
                     });
-             this._saws.forEach(saw => {
+            this._saws.forEach(saw => {
                      this.checkCollision(this._player, saw); 
                      saw.update();               
-                    });   
+                    }); 
+            this._crates.forEach(crate => {
+                //console.log("frame" +crate.currentAnimationFrame);
+                if(crate.currentAnimationFrame > 2.5){
+                   this._scrollableObjContainer.removeChild(crate);
+                   this.removeChild(crate);
+                }
+                else
+                    this.checkCollision(this._player, crate);                                 
+                })  
            
 
             this._player.update();
@@ -103,6 +114,12 @@ module scenes {
                 stopGame=true;
                 stage.addChild(this._winBtn);
             }
+
+             if(this._player.y >650 || this._player.y <-10){
+                stopGame=true;
+                stage.addChild(this._loseBtn);
+            }
+
 
 
         }
@@ -159,7 +176,7 @@ module scenes {
         }
 
         private _scrollBGForward(speed : number) : void{
-            //if(this._scrollableObjContainer.regX < 4800 - 815)
+         
                 this._scrollableObjContainer.regX = speed - 350;
         }
 
@@ -176,18 +193,30 @@ module scenes {
 
         private checkCollision(obj1 : objects.GameObject, obj2 : objects.GameObject) {
 
-        if(!stopGame){
-           if( obj1.tr_corner.x < obj2.tr_corner.x &&
-                obj1.tr_corner.x > obj2.tl_corner.x && 
-                obj1.tr_corner.y < obj2.bl_corner.y &&
-                obj1.br_corner.y > obj2.tl_corner.y) {
-               
-               stopGame=true;
-               stage.addChild(this._loseBtn);
-            }
-        }
+            if(!stopGame){
 
+
+                if( obj1.tr_corner.x < obj2.tr_corner.x &&
+                    obj1.tr_corner.x > obj2.tl_corner.x && 
+                    obj1.tr_corner.y < obj2.bl_corner.y &&
+                    obj1.br_corner.y > obj2.tl_corner.y) {
+                    if(this._player.currentAnimation == "fast" && obj2.name=="crate" ){               
+                        this.crateAnim(obj2);
+                    }
+                    else{
+                        stopGame=true;
+                        stage.addChild(this._loseBtn);
+                    }
+                }
+            }  
+        }
+        private crateAnim(cr : objects.Crate){
+            if(cr.currentAnimation != "blow")
+            {
+                cr.gotoAndPlay("blow");
+            }
             
+
         }
 
         private buildLevel(thisThis){
@@ -198,7 +227,7 @@ module scenes {
                                 [1,7,12,24,25,27,29,36,37,38,40,42,44,45,46],
                                 [1,6,7,12,24,25,29,31,32,33,34,40,44,45,46]
                                 ];
-            var breakableWalls =[[12,3],[34,4],[38,5],[44,3],[45,3],[46,3]];
+            var breakableCrates =[[12,3],[34,4],[38,5],[44,3],[45,3],[46,3]];
             var floatingSaws =[[14,2],[15,2],[16,2],[18,1],[18,3],[20,1],[20,3]];
             var floatingHalfWalls =[[22,1],[22,2],[22,3],[22,4]];
 
@@ -212,11 +241,15 @@ module scenes {
             }
 
             floatingSaws.forEach(el => {
-                var currentBlock =new objects.Saw(new objects.Vector2(this._tileSize*2*el[0]+this._tileSize/2,this._tileSize*el[1]+this._tileSize/2))
+                var currentBlock =new objects.Saw(new objects.Vector2(this._tileSize*2*el[0]+this._tileSize/2,this._tileSize*(el[1]-1)+this._tileSize/2))
                 this._saws.push(currentBlock);
-                this._scrollableObjContainer.addChild(currentBlock);
+                this._scrollableObjContainer.addChild(currentBlock);                
+            });
 
-                
+            breakableCrates.forEach(el => {
+                var currentBlock =new objects.Crate(new objects.Vector2(this._tileSize*2*el[0]+this._tileSize/2,this._tileSize*(el[1]-1)+this._tileSize/2))
+                this._crates.push(currentBlock);
+                this._scrollableObjContainer.addChild(currentBlock);                
             });
             console.log("Level construction finished");
         }

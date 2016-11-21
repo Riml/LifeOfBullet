@@ -12,6 +12,7 @@
 /// <reference path="../objects/gameobject.ts" />
 /// <reference path="../objects/vector2.ts" />
 /// <reference path="../objects/saw.ts" />
+/// <reference path="../objects/crate.ts" />
 
 
 /// <reference path="../util/physicsManager.ts" />

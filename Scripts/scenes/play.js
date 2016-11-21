@@ -30,6 +30,7 @@ var scenes;
             this._scrollableObjContainer.addChild(this._player);
             this._blocks = [];
             this._saws = [];
+            this._crates = [];
             this.buildLevel(this);
             this.addChild(this._scrollableObjContainer);
             window.onkeydown = this._onKeyDown;
@@ -71,6 +72,15 @@ var scenes;
                 _this.checkCollision(_this._player, saw);
                 saw.update();
             });
+            this._crates.forEach(function (crate) {
+                //console.log("frame" +crate.currentAnimationFrame);
+                if (crate.currentAnimationFrame > 2.5) {
+                    _this._scrollableObjContainer.removeChild(crate);
+                    _this.removeChild(crate);
+                }
+                else
+                    _this.checkCollision(_this._player, crate);
+            });
             this._player.update();
             if (this.checkScroll()) {
                 this._scrollBGForward(this._player.x);
@@ -78,6 +88,10 @@ var scenes;
             if (this._player.x > 12100) {
                 stopGame = true;
                 stage.addChild(this._winBtn);
+            }
+            if (this._player.y > 650 || this._player.y < -10) {
+                stopGame = true;
+                stage.addChild(this._loseBtn);
             }
         };
         Play.prototype._onKeyDown = function (event) {
@@ -127,7 +141,6 @@ var scenes;
             }
         };
         Play.prototype._scrollBGForward = function (speed) {
-            //if(this._scrollableObjContainer.regX < 4800 - 815)
             this._scrollableObjContainer.regX = speed - 350;
         };
         Play.prototype.checkScroll = function () {
@@ -144,9 +157,19 @@ var scenes;
                     obj1.tr_corner.x > obj2.tl_corner.x &&
                     obj1.tr_corner.y < obj2.bl_corner.y &&
                     obj1.br_corner.y > obj2.tl_corner.y) {
-                    stopGame = true;
-                    stage.addChild(this._loseBtn);
+                    if (this._player.currentAnimation == "fast" && obj2.name == "crate") {
+                        this.crateAnim(obj2);
+                    }
+                    else {
+                        stopGame = true;
+                        stage.addChild(this._loseBtn);
+                    }
                 }
+            }
+        };
+        Play.prototype.crateAnim = function (cr) {
+            if (cr.currentAnimation != "blow") {
+                cr.gotoAndPlay("blow");
             }
         };
         Play.prototype.buildLevel = function (thisThis) {
@@ -158,7 +181,7 @@ var scenes;
                 [1, 7, 12, 24, 25, 27, 29, 36, 37, 38, 40, 42, 44, 45, 46],
                 [1, 6, 7, 12, 24, 25, 29, 31, 32, 33, 34, 40, 44, 45, 46]
             ];
-            var breakableWalls = [[12, 3], [34, 4], [38, 5], [44, 3], [45, 3], [46, 3]];
+            var breakableCrates = [[12, 3], [34, 4], [38, 5], [44, 3], [45, 3], [46, 3]];
             var floatingSaws = [[14, 2], [15, 2], [16, 2], [18, 1], [18, 3], [20, 1], [20, 3]];
             var floatingHalfWalls = [[22, 1], [22, 2], [22, 3], [22, 4]];
             for (var r = 0; r < 5; r++) {
@@ -169,8 +192,13 @@ var scenes;
                 });
             }
             floatingSaws.forEach(function (el) {
-                var currentBlock = new objects.Saw(new objects.Vector2(_this._tileSize * 2 * el[0] + _this._tileSize / 2, _this._tileSize * el[1] + _this._tileSize / 2));
+                var currentBlock = new objects.Saw(new objects.Vector2(_this._tileSize * 2 * el[0] + _this._tileSize / 2, _this._tileSize * (el[1] - 1) + _this._tileSize / 2));
                 _this._saws.push(currentBlock);
+                _this._scrollableObjContainer.addChild(currentBlock);
+            });
+            breakableCrates.forEach(function (el) {
+                var currentBlock = new objects.Crate(new objects.Vector2(_this._tileSize * 2 * el[0] + _this._tileSize / 2, _this._tileSize * (el[1] - 1) + _this._tileSize / 2));
+                _this._crates.push(currentBlock);
                 _this._scrollableObjContainer.addChild(currentBlock);
             });
             console.log("Level construction finished");
