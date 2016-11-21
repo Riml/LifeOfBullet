@@ -8,6 +8,8 @@ module scenes {
 
         private _scrollTrigger : number = 350;
         private _tileSize : number = 128;
+        private _winBtn: objects.Button;
+        private _loseBtn: objects.Button;
 
        
 
@@ -17,6 +19,13 @@ module scenes {
         }
 
         public start() : void {
+            stopGame=false;
+
+            this._winBtn = new objects.Button("winBtn", 0, 0);
+            this._winBtn.on("click", this._winBtnClick, this);
+            this._loseBtn = new objects.Button("loseBtn", 75, 25);
+            this._loseBtn.on("click", this._loseBtnClick, this);
+
             animationInPlay=false;
             idleAnimationInPlay=true;
             this._tileSize = 128;
@@ -49,7 +58,7 @@ module scenes {
         }
 
         public update() : void {
-            console.log( "animationInPlay? : " +animationInPlay);
+            //console.log( "animationInPlay? : " +animationInPlay);
             if(controls.UP) {
                 this._player.moveUp();
             }
@@ -72,17 +81,27 @@ module scenes {
                     animationInPlay=true;
                 }
             }
+
              if(!animationInPlay &&  idleAnimationInPlay){
                     this._player.gotoAndPlay("idle");
                     idleAnimationInPlay=false;
                    
-                }          
+            }        
+            this._blocks.forEach(block => {
+                     this.checkCollision(this._player, block);
+                
+             });  
            
 
             this._player.update();
 
             if(this.checkScroll()) {
                 this._scrollBGForward(this._player.x);
+            }
+
+            if(this._player.x >12500){
+                stopGame=true;
+                stage.addChild(this._winBtn);
             }
 
 
@@ -155,16 +174,20 @@ module scenes {
             }
         }
 
-        private checkCollision(obj1 : objects.GameObject, obj2 : objects.GameObject) : boolean {
+        private checkCollision(obj1 : objects.GameObject, obj2 : objects.GameObject) {
 
-            if(obj2.x < obj1.x + obj1.getBounds().width &&
-                obj2.x + obj2.getBounds().width > obj1.x &&
-                obj2.y < obj1.y + obj1.getBounds().height &&
-                obj2.y + obj2.getBounds().height > obj1.y - 10) {
-                return true;
+        if(!stopGame){
+           if( obj1.tr_corner.x < obj2.tr_corner.x &&
+                obj1.tr_corner.x > obj2.tl_corner.x && 
+                obj1.tr_corner.y < obj2.bl_corner.y &&
+                obj1.br_corner.y > obj2.tl_corner.y) {
+               
+               stopGame=true;
+               stage.addChild(this._loseBtn);
             }
+        }
 
-            return false;
+            
         }
 
         private buildLevel(thisThis){
@@ -191,5 +214,30 @@ module scenes {
             }
             console.log("Level construction finished");
         }
-    }
+
+        private _winBtnClick(event : createjs.MouseEvent){
+            
+            scene = config.Scene.MENU;
+            changeScene();
+
+
+        }
+
+         private _loseBtnClick(event : createjs.MouseEvent){
+           
+            scene = config.Scene.MENU;
+            changeScene();
+
+
+        }
+    
+
+
+
+
+
+
+
+}
+
 }

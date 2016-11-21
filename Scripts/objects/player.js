@@ -17,20 +17,25 @@ var objects;
             this.y = 320;
         };
         Player.prototype.update = function () {
-            this.x += 5;
+            if (!stopGame)
+                this.x += 5;
             _super.prototype.update.call(this);
         };
         Player.prototype.slowMo = function () {
-            this.x -= 4;
+            if (!stopGame)
+                this.x -= 4;
         };
         Player.prototype.Accelerate = function () {
-            this.x += 3;
+            if (!stopGame)
+                this.x += 5;
         };
         Player.prototype.moveUp = function () {
-            this.y -= 3;
+            if (!stopGame)
+                this.y -= 4;
         };
         Player.prototype.moveDown = function () {
-            this.y += 3;
+            if (!stopGame)
+                this.y += 4;
         };
         return Player;
     }(objects.GameObject));

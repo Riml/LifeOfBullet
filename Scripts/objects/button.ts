@@ -29,7 +29,7 @@ module objects {
 
         // Modify the bitmaps alpha value when hovering over the button
         overButton(event: createjs.MouseEvent) : void {
-            event.currentTarget.alpha = 0.5;
+            event.currentTarget.alpha = 0.9;
         }
         
         // Modify the bitmaps alphave when mouse is not hovering

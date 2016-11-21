@@ -10,7 +10,7 @@ var player_anim : createjs.SpriteSheet;
 
 var currentScene : objects.Scene;
 var scene: number;
-var gamelost : boolean;
+var stopGame : boolean;
 
 var animationInPlay : boolean;
 var idleAnimationInPlay : boolean;
@@ -21,6 +21,8 @@ var assetData:objects.Asset[] = [
     {id: "bullet", src: "../../Assets/images/player.png"},
     {id: "menu_bg", src: "../../Assets/images/menu_bg.png"},
     {id: "playBtn", src: "../../Assets/images/playBtn.png"},
+    {id: "winBtn", src: "../../Assets/images/win.png"},
+    {id: "loseBtn", src: "../../Assets/images/lose.png"},
     {id: "backBtn", src: "../../Assets/images/backBtn.png"},
     {id: "instBtn", src: "../../Assets/images/instBtn.png"},
     {id: "block", src: "../../Assets/images/block.png"},
@@ -39,6 +41,7 @@ function preload() {
 
 function init() {
     // Reference to canvas element
+   
     canvas = document.getElementById("canvas");
     stage = new createjs.Stage(canvas);
     stage.enableMouseOver(20);

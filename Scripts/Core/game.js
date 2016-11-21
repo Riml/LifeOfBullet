@@ -7,7 +7,7 @@ var spriteSheetLoader;
 var player_anim;
 var currentScene;
 var scene;
-var gamelost;
+var stopGame;
 var animationInPlay;
 var idleAnimationInPlay;
 // Preload Assets required
@@ -16,6 +16,8 @@ var assetData = [
     { id: "bullet", src: "../../Assets/images/player.png" },
     { id: "menu_bg", src: "../../Assets/images/menu_bg.png" },
     { id: "playBtn", src: "../../Assets/images/playBtn.png" },
+    { id: "winBtn", src: "../../Assets/images/win.png" },
+    { id: "loseBtn", src: "../../Assets/images/lose.png" },
     { id: "backBtn", src: "../../Assets/images/backBtn.png" },
     { id: "instBtn", src: "../../Assets/images/instBtn.png" },
     { id: "block", src: "../../Assets/images/block.png" },

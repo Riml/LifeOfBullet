@@ -28,7 +28,7 @@ var objects;
         }
         // Modify the bitmaps alpha value when hovering over the button
         Button.prototype.overButton = function (event) {
-            event.currentTarget.alpha = 0.5;
+            event.currentTarget.alpha = 0.9;
         };
         // Modify the bitmaps alphave when mouse is not hovering
         Button.prototype.outButton = function (event) {

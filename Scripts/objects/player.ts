@@ -17,24 +17,28 @@ module objects {
         }
 
         public update() : void {
-         
-            this.x+=5;                
+            if(!stopGame)         
+                this.x+=5;                
           
             super.update();
         }
 
         public slowMo() : void {
-            this.x -= 4;
+            if(!stopGame)         
+                this.x -= 4;
         }
         public Accelerate() : void {
-            this.x += 3;
+            if(!stopGame)         
+                this.x += 5;
         }
       
         public moveUp() : void {
-            this.y -= 3;
+            if(!stopGame)         
+                this.y -= 4;
         }
         public moveDown() : void {
-            this.y += 3;
+            if(!stopGame)         
+                this.y += 4;
         }
        
     }

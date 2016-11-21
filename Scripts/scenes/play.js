@@ -14,6 +14,11 @@ var scenes;
             //this.start();
         }
         Play.prototype.start = function () {
+            stopGame = false;
+            this._winBtn = new objects.Button("winBtn", 0, 0);
+            this._winBtn.on("click", this._winBtnClick, this);
+            this._loseBtn = new objects.Button("loseBtn", 75, 25);
+            this._loseBtn.on("click", this._loseBtnClick, this);
             animationInPlay = false;
             idleAnimationInPlay = true;
             this._tileSize = 128;
@@ -32,7 +37,8 @@ var scenes;
             stage.addChild(this);
         };
         Play.prototype.update = function () {
-            console.log("animationInPlay? : " + animationInPlay);
+            var _this = this;
+            //console.log( "animationInPlay? : " +animationInPlay);
             if (controls.UP) {
                 this._player.moveUp();
             }
@@ -57,9 +63,16 @@ var scenes;
                 this._player.gotoAndPlay("idle");
                 idleAnimationInPlay = false;
             }
+            this._blocks.forEach(function (block) {
+                _this.checkCollision(_this._player, block);
+            });
             this._player.update();
             if (this.checkScroll()) {
                 this._scrollBGForward(this._player.x);
+            }
+            if (this._player.x > 12500) {
+                stopGame = true;
+                stage.addChild(this._winBtn);
             }
         };
         Play.prototype._onKeyDown = function (event) {
@@ -121,13 +134,15 @@ var scenes;
             }
         };
         Play.prototype.checkCollision = function (obj1, obj2) {
-            if (obj2.x < obj1.x + obj1.getBounds().width &&
-                obj2.x + obj2.getBounds().width > obj1.x &&
-                obj2.y < obj1.y + obj1.getBounds().height &&
-                obj2.y + obj2.getBounds().height > obj1.y - 10) {
-                return true;
+            if (!stopGame) {
+                if (obj1.tr_corner.x < obj2.tr_corner.x &&
+                    obj1.tr_corner.x > obj2.tl_corner.x &&
+                    obj1.tr_corner.y < obj2.bl_corner.y &&
+                    obj1.br_corner.y > obj2.tl_corner.y) {
+                    stopGame = true;
+                    stage.addChild(this._loseBtn);
+                }
             }
-            return false;
         };
         Play.prototype.buildLevel = function (thisThis) {
             var _this = this;
@@ -149,6 +164,14 @@ var scenes;
                 });
             }
             console.log("Level construction finished");
+        };
+        Play.prototype._winBtnClick = function (event) {
+            scene = config.Scene.MENU;
+            changeScene();
+        };
+        Play.prototype._loseBtnClick = function (event) {
+            scene = config.Scene.MENU;
+            changeScene();
         };
         return Play;
     }(objects.Scene));
