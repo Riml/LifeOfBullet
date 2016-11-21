@@ -22,6 +22,7 @@ var assetData = [
     { id: "loseBtn", src: "../../Assets/images/lose.png" },
     { id: "backBtn", src: "../../Assets/images/backBtn.png" },
     { id: "instBtn", src: "../../Assets/images/instBtn.png" },
+    { id: "inst_bg", src: "../../Assets/images/tut_bg.png" },
     { id: "block", src: "../../Assets/images/block.png" },
     { id: "player_ss", src: "../../Assets/images/player_ss.png" },
     { id: "crate_ss", src: "../../Assets/images/crate_ss.png" },
